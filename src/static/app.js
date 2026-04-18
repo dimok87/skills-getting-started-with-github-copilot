@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Function to fetch activities from API
   async function fetchActivities() {
     try {
-      const response = await fetch("/activities");
+      const response = await fetch(`/activities?t=${Date.now()}`, { cache: "no-store" });
       const activities = await response.json();
 
       // Clear loading message
@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
               if (response.ok) {
                 activitiesList.innerHTML = "";
                 activitySelect.innerHTML = '<option value="">-- Select an activity --</option>';
-                fetchActivities();
+                await fetchActivities();
               } else {
                 const result = await response.json();
                 alert(result.detail || "Failed to unregister");
@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
         signupForm.reset();
         activitiesList.innerHTML = "";
         activitySelect.innerHTML = '<option value="">-- Select an activity --</option>';
-        fetchActivities();
+        await fetchActivities();
       } else {
         messageDiv.textContent = result.detail || "An error occurred";
         messageDiv.className = "error";
